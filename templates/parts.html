@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tool Calibaration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  </head>
+  <body>
+    <div class=' container m-3 '>
+
+      <h1 >Tool Calibaration</h1>
+
+    </div>
+
+    <!-- <h1 class="mx-4">Calibaration of tools</h1> -->
+      <div class='m-5'>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2">
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/parts">Tool Data</a>
+          </li>
+        </ul>
+      <div class="float-right">
+
+        <form class="form-inline float-right" action="/search" method="POST">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query">
+          <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+        </form>
+
+
+        </div>
+      </div>
+    </nav>
+
+
+    <div>   
+        <table class="table">
+            <thead> 
+              <tr>
+                <th scope="col">S. No.</th> 
+                <th scope="col">Plant Name</th>
+                <th scope="col">Area Name</th>
+                <th scope="col">Part Type</th>
+                <th scope="col">Part Name</th>
+                <th scope="col">Part Unique Number</th>
+                <th scope="col">Calibration Date</th>
+                <th scope="col">Next Calibration Date</th>
+                <th scope="col">Reminder</th>
+                <th scope="col">Remarks</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for form in forms  %}
+                
+                {% if form.reminderInDays == '0' %}
+              <tr class="table-danger">
+                {% else %}
+                <tr>
+                  {% endif %}
+                <th scope="row">{{ loop.index }}</th> 
+                <td>{{form.plantName}}</td>
+                <td>{{form.areaName}}</td>
+                <td>{{form.partType}}</td>
+                <td>{{form.partName}}</td>
+                <td>{{form.partUniqueNumber}}</td>
+                <td>{{form.calibarationDate}}</td>
+                <td>{{form.nextCalibarationDate}}</td>
+                {%if form.reminderInDays == '0' %}
+                <td class="text-danger">{{form.reminderInDays}}</td>
+                {% else %}
+                <td >{{form.reminderInDays}}</td>
+                {% endif %}
+                <!-- <td>{{form.reminderInDays}}</td> -->
+                <td>{{form.remarks}}</td>
+                <td><a href="/parts/delete/{{form.id}}">Delete</a></td>
+              </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+      </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+  </body>
+</html>

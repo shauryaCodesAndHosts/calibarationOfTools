@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tool Calibaration</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  </head>
+  <body>
+    <!-- <h1 class="mx-4">Calibaration of tools</h1> -->
+    <div class=' container m-3 '>
+
+      <h1 >Tool Calibaration</h1>
+
+    </div>
+    <!-- Example single danger button -->
+
+  <div class='m-5'>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mx-2">
+      
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/parts">Tool Data</a>
+          </li>
+        </ul>
+      <div class="float-right">
+        <form class="form-inline float-right" action="/search" method="POST">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="query" >
+          <button class="btn btn-outline-success my-2 my-sm-0 " type="submit">Search</button>
+        </form>
+        </div>
+      </div>
+    </nav>
+
+
+
+    
+    <div class="mx-4 p-2" style="width: 400px;" >
+      <form method="POST" action="/" id = "data-form">
+
+
+
+        <div class="form-group mb-3">
+          <label for="firstDropdown">Plant :</label>
+          <select class="form-select" id="firstDropdown" name="plantName" required>
+              <option value="">Select Plant</option>
+              <option value="Pune">Pune</option>
+              <option value="Jamshedpur">Jamshedpur</option>
+              <option value="Lucknow">Lucknow</option>
+              <option value="Dharwad">Dharwad</option>
+          </select>
+      </div>
+
+        
+      <div class="form-group mb-3">
+        <label for="secondDropdown">Area :</label>
+        <select class="form-select mb-3" id="secondDropdown" name="areaName" required>
+            <!-- Options will be dynamically populated based on the selection from the first dropdown -->
+        </select>
+  
+  
+  
+        <script>
+          // Function to populate the second dropdown based on the selected option from the first dropdown
+          function populateSecondDropdown() {
+              const firstDropdown = document.getElementById('firstDropdown');
+              const selectedOption = firstDropdown.value;
+  
+              // Fetch options for the second dropdown using ajax
+              fetch(`/get_options/${selectedOption}`)
+                  .then(response => response.json())
+                  .then(data => {
+                      const secondDropdown = document.getElementById('secondDropdown');
+                      // Clear previous options
+                      secondDropdown.innerHTML = '';
+  
+                      // Add new options to the second dropdown
+                      data.forEach(option => {
+                          const optionElement = document.createElement('option');
+                          optionElement.value = option;
+                          optionElement.innerText = option;
+                          secondDropdown.appendChild(optionElement);
+                      });
+                  });
+          }
+  
+          // Event listener to trigger the population of the second dropdown
+          document.getElementById('firstDropdown').addEventListener('change', populateSecondDropdown);
+  
+          // Initial population of the second dropdown
+          populateSecondDropdown();
+      </script>
+
+        <div class="mb-3">
+          <label class="form-label">Part Type</label>
+          <input type="text" class="form-control"  name="partType" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Part Name</label>
+          <input type="text" class="form-control"  name="partName" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Part Unique Number</label>
+          <input type="text" class="form-control"  name="partUniqueNumber" required>
+        </div>
+
+  <div class="form-group">
+    <label for="datepicker">Select Calibaration Date:</label>
+    <input type="text" class="form-control" id="datepicker1" placeholder="Select date" name='calibarationDate' required>
+  </div>
+
+  <div class="form-group">
+    <label for="datepicker">Select Next Calibaration Date:</label>
+    <input type="text" class="form-control" id="datepicker2" placeholder="Select date" name='nextCalibarationDate' required>
+  </div>
+
+        <div class="mb-3">
+          <label class="form-label">Reminder In Days</label>
+          <input type="number" class="form-control"  name="reminderInDays">
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Remarks</label>
+          <input type="text" class="form-control"  name="remarks">
+        </div>
+
+        
+<script>
+  // Initialize the Bootstrap Datepicker
+  $(document).ready(function() {
+    $('#datepicker1').datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true
+    });
+  });
+
+  // Function to get the selected date and display it
+  function getDate() {
+    const selectedDate = $('#datepicker1').val();
+    alert('Selected Date: ' + selectedDate);
+    // You can use the 'selectedDate' variable to perform further actions or send it to the server.
+  }
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('#datepicker2').datepicker({
+      format: 'dd-mm-yyyy',
+      autoclose: true
+    });
+  });
+
+  function getDate() {
+    const selectedDate = $('#datepicker2').val();
+    alert('Selected Date: ' + selectedDate);
+  }
+</script>
+
+
+        <button type="submit" id="buttonSubmit" onclick="showAlert()" class="btn btn-primary">Submit</button>
+<script>
+function showAlert()
+{
+  alert("Application submitted successfully");
+}
+</script>
+      
+
+      </form>
+    </div>
+
+  </div>
+  </body>
+</html>
